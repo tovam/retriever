@@ -46,6 +46,24 @@ function HelpPage() {
     );
 }
 
+function TextCopy({ value, style }) {
+    const [copyText, setCopyText] = useState('Copy');
+
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(value);
+        setCopyText('Copied!');
+    };
+
+    return (
+        <div className="input-group mb-3">
+            <textarea type="text" className="form-control" value={value} style={style} disabled />
+            <button className="btn btn-primary btn-copy" onClick={copyToClipboard}>
+                {copyText}
+            </button>
+        </div>
+    );
+}
+
 function URLCopy({ url }) {
     const [copyText, setCopyText] = useState('Copy');
 
@@ -98,7 +116,7 @@ function SenderPage({ url, inputData, encrypt, setInputData, setUrl, publicKey }
                         <h3 className="text-success">Success!</h3>
                         <p className="text-success">Send this URL back to the requester to share the secret.</p>
                         <URLCopy url={url}/>
-                        {url.endsWith(';long') && <div><p className="text-success">Also send the requester this encrypted block of text:</p><textarea value={inputData} style={{fontFamily: "Courier", width: "90%", height: "285px"}} /></div>}
+                        {url.endsWith(';long') && <div><p className="text-success">Also send the requester this encrypted block of text:</p><TextCopy value={inputData} style={{fontFamily: "Courier", height: "285px"}} /></div>}
                     </div>
                 }
             </div>
