@@ -42,3 +42,39 @@ footer {
     text-align: left;
     line-height: 32px;
 }
+
+.help-number {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color: #FFA500;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    margin-right: 10px;
+}
+
+.how-it-works {
+    list-style-type: none;
+    padding: 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.how-it-works > li {
+    display: flex;
+    align-items: start;
+    margin-bottom: 20px;
+}
+
+.help-block > h2 {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.monospace {
+    font-family: Courier;
+}

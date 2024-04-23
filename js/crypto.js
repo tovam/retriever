@@ -72,18 +72,32 @@ async function load_private_key(public_key_ser) {
     return await importJWKey(deserialize_key(localStorage.getItem(pub_key_ser)), 'decrypt')
 }
 
-async function encryptString(publicKey, plaintext) {
-    const textBuffer = new TextEncoder().encode(plaintext);
+async function encryptStringByChunks(publicKey, plaintext) {
+    const chunkSize = 190;
+    const chunks = [];
 
-    const encryptedBuffer = await window.crypto.subtle.encrypt(
-        {
-            name: ALGO_NAME,
-        },
-        publicKey,
-        textBuffer
-    );
+    for (let i = 0; i < plaintext.length; i += chunkSize) {
+        const chunk = plaintext.substring(i, i + chunkSize);
+        chunks.push(chunk);
+    }
 
-    return btoa(String.fromCharCode(...new Uint8Array(encryptedBuffer)));
+    const encryptedChunks = [];
+
+    for (const chunk of chunks) {
+        const textBuffer = new TextEncoder().encode(chunk);
+        const encryptedBuffer = await window.crypto.subtle.encrypt(
+            {
+                name: ALGO_NAME,
+            },
+            publicKey,
+            textBuffer
+        );
+
+        const base64String = btoa(String.fromCharCode(...new Uint8Array(encryptedBuffer)));
+        encryptedChunks.push(base64String);
+    }
+
+    return encryptedChunks
 }
 
 async function decryptString(privateKey, encryptedBase64) {
